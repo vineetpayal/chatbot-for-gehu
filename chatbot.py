@@ -7,7 +7,8 @@ from langchain.chat_models import ChatOpenAI
 from colorama import Fore
 import requests
 from bs4 import BeautifulSoup
-import config 
+import config
+import pyttsx3 
 
 #function to fetch the courses available in GEHU
 def fetchNames(url):
@@ -55,9 +56,12 @@ loader = TextLoader('Data.txt')
 index = VectorstoreIndexCreator().from_loaders([loader])
 
 #To keep the converstion going.
+engine = pyttsx3.init()
 while (1):
     query = input(Fore.GREEN +"You: ")
 
     if("bye" in query or "goodbye" in query or "exit" in query or "close" in query):
         break
+    engine.say(index.query(query))
     print(Fore.BLUE+"GEHU: ",index.query(query))
+    engine.runAndWait()
